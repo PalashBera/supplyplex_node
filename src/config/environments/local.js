@@ -5,7 +5,8 @@ export const db = {
     url: 'mongodb://localhost:27017/supplyplex',
     options: {
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
+      useCreateIndex: true
     }
   }
 };

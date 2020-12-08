@@ -1,8 +1,11 @@
-import { Schema } from 'mongoose';
+import mongoose from 'mongoose';
+
+const { Schema } = mongoose;
 
 const userSchema = new Schema({
   email: {
     type: String,
+    trim: true,
     required: [true, 'Email can\'t be blank'],
     lowercase: true,
     index: {

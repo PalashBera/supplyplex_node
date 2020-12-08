@@ -4,6 +4,7 @@ const config = require('./config/environments/' + global.env);
 import express from 'express';
 import logger from 'morgan';
 import mongoose from 'mongoose';
+import { rootRouter } from './api'
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.db.mongodb.url, config.db.mongodb.options)
@@ -12,9 +13,12 @@ mongoose.connect(config.db.mongodb.url, config.db.mongodb.options)
 
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use(logger('dev'));
 
-app.get('/', (req, res) => res.json({ msg: 'Welcome to supplyplex..!!' }));
+app.use('/api', rootRouter);
 
 app.use((req, res, next) => {
   const error = new Error('Not found');
