@@ -1,8 +1,16 @@
+global.env = process.env.NODE_ENV || 'local';
+const config = require('./config/environments/' + global.env);
+
 import express from 'express';
 import logger from 'morgan';
+import mongoose from 'mongoose';
+
+mongoose.Promise = global.Promise;
+mongoose.connect(config.db.mongodb.url, config.db.mongodb.options)
+  .then(() => console.log('Database is connected successfully.'))
+  .catch((err) => console.log('Error while connecting to database.'))
 
 const app = express();
-const PORT = 4000;
 
 app.use(logger('dev'));
 
@@ -24,6 +32,6 @@ app.use((error, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running at PORT http://localhost:${PORT}`);
+app.listen(config.port, () => {
+  console.log(`Server is running at PORT http://localhost:${config.port}`);
 });
