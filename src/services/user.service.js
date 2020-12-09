@@ -1,4 +1,5 @@
 import { check } from 'express-validator';
+import bcrypt from 'bcryptjs';
 import User from '../models/user.model';
 
 module.exports = {
@@ -30,5 +31,10 @@ module.exports = {
           return value;
         }
       }).withMessage('This doesn\'t match with password.')
-  ]
+  ],
+
+  encryptPassword(password) {
+    const salt = bcrypt.genSaltSync(10);
+    return bcrypt.hashSync(password, salt);
+  }
 }
