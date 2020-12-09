@@ -2,6 +2,7 @@ import { validationResult } from 'express-validator';
 import { errorFormatter } from '../helpers/errorFormator';
 import User from '../models/user.model';
 import userService from '../services/user.service';
+import responder from '../helpers/responder';
 
 export default {
   async signup(req, res) {
@@ -9,7 +10,7 @@ export default {
       const errors = validationResult(req).formatWith(errorFormatter);
 
       if (!errors.isEmpty()) {
-        return res.json({ errors: errors.array() });
+        return responder.unprocessableEntity(res, { errors: errors.array() });
       }
 
       const encryptedPass = userService.encryptPassword(req.body.password);
@@ -19,9 +20,9 @@ export default {
         password: encryptedPass
       });
 
-      return res.json(user);
+      return responder.success(req, res, user, { message: 'User has been successfully created.' });
     } catch (err) {
-      return res.status(500).send(err);
+      return responder.internalServerError(res, err);
     }
   }
 };
