@@ -3,6 +3,7 @@ import { errorFormatter } from '../helpers/errorFormator';
 import User from '../models/user.model';
 import userService from '../services/user.service';
 import responder from '../helpers/responder';
+import jwt from '../helpers/jwt';
 
 export default {
   async signup(req, res) {
@@ -20,7 +21,8 @@ export default {
         password: encryptedPass
       });
 
-      return responder.success(req, res, user, { message: 'User has been successfully created.' });
+      const token = jwt.issue({ id: user._id }, '1d');
+      return responder.success(req, res, user, { message: 'User has been successfully created.', jwtToken: token });
     } catch (err) {
       return responder.internalServerError(res, err);
     }
@@ -47,7 +49,8 @@ export default {
         return responder.unprocessableEntity(res, { errors: [error] });
       }
 
-      return responder.success(req, res, user, { message: 'User has been successfully logged in.' }); // send jwt token
+      const token = jwt.issue({ id: user._id }, '1d');
+      return responder.success(req, res, user, { message: 'User has been successfully logged in.', jwtToken: token });
     } catch (err) {
       return responder.internalServerError(res, err);
     }

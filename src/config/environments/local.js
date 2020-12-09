@@ -10,3 +10,7 @@ export const db = {
     }
   }
 };
+
+export const secrets = {
+  jwt_key: "$2amoVGmf6YnFwh46js9I9T3Ek9HTCw06R4rtWmI"
+};
