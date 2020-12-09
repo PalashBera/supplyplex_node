@@ -33,8 +33,30 @@ module.exports = {
       }).withMessage('This doesn\'t match with password.')
   ],
 
+  validateLogIn: [
+    check('email')
+      .exists().withMessage('This should be present.').bail()
+      .isString().withMessage('This should be string.').bail()
+      .trim().isLength({ min: 1 }).withMessage('This can\'t be blank.').bail()
+      .isEmail().withMessage('This isn\'t valid.').bail()
+      .normalizeEmail()
+      .custom(async value => {
+        const user = await User.findOne({ email: value });
+        if (!user) return Promise.reject('No user found with this email.');
+      }),
+
+    check('password')
+      .exists().withMessage('This should be present.').bail()
+      .isString().withMessage('This should be string.').bail()
+      .trim().isLength({ min: 6 }).withMessage('This must be at least 6 characters.')
+  ],
+
   encryptPassword(password) {
     const salt = bcrypt.genSaltSync(10);
     return bcrypt.hashSync(password, salt);
+  },
+
+  comparePassword(password, encryptedPassword) {
+    return bcrypt.compareSync(password, encryptedPassword);
   }
 }
