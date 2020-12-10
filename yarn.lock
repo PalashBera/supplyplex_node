@@ -999,6 +999,11 @@ clone-response@^1.0.2:
   dependencies:
     mimic-response "^1.0.0"
 
+clone@0.1.9:
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/clone/-/clone-0.1.9.tgz#d4d3f10db4338af8792509f5e600ad8a01ff08a0"
+  integrity sha1-1NPxDbQzivh5JQn15gCtigH/CKA=
+
 collection-visit@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/collection-visit/-/collection-visit-1.0.0.tgz#4bc0373c164bc3291b4d368c829cf1a80a59dca0"
@@ -2469,6 +2474,13 @@ mongodb@3.6.3:
     safe-buffer "^5.1.2"
   optionalDependencies:
     saslprep "^1.0.0"
+
+mongoose-json-select@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/mongoose-json-select/-/mongoose-json-select-0.2.1.tgz#6c267e133dd00eca237eeec9a07030b3a7583a09"
+  integrity sha1-bCZ+Ez3QDsojfu7JoHAws6dYOgk=
+  dependencies:
+    clone "0.1.9"
 
 mongoose-legacy-pluralize@1.0.2:
   version "1.0.2"

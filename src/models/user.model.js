@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import jsonSelect from 'mongoose-json-select';
 
 const { Schema } = mongoose;
 
@@ -18,5 +19,7 @@ const userSchema = new Schema({
     required: [true, 'Password can\'t be blank']
   }
 });
+
+userSchema.plugin(jsonSelect, '_id email');
 
 export default mongoose.model('User', userSchema);
