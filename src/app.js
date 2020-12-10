@@ -4,6 +4,7 @@ const config = require('./config/environments/' + global.env);
 import express from 'express';
 import logger from 'morgan';
 import passport from 'passport';
+import cors from 'cors';
 import mongoose from 'mongoose';
 import { rootRouter } from './api'
 import { configJWTStrategy } from './helpers/passportJwt';
@@ -15,6 +16,7 @@ mongoose.connect(config.db.mongodb.url, config.db.mongodb.options)
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
