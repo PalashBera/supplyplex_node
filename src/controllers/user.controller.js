@@ -54,5 +54,14 @@ export default {
     } catch (err) {
       return responder.internalServerError(res, err);
     }
+  },
+
+  async authenticate(req, res) {
+    try {
+      const token = jwt.issue({ id: req.user._id }, '1d');
+      return responder.success(req, res, req.user, { message: 'User has been successfully authenticated.', jwtToken: token });
+    } catch (err) {
+      return responder.internalServerError(res, err);
+    }
   }
 };

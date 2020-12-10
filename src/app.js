@@ -3,8 +3,10 @@ const config = require('./config/environments/' + global.env);
 
 import express from 'express';
 import logger from 'morgan';
+import passport from 'passport';
 import mongoose from 'mongoose';
 import { rootRouter } from './api'
+import { configJWTStrategy } from './helpers/passportJwt';
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.db.mongodb.url, config.db.mongodb.options)
@@ -17,6 +19,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(logger('dev'));
+
+app.use(passport.initialize());
+configJWTStrategy();
 
 app.use('/api', rootRouter);
 
