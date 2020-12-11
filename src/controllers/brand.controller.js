@@ -66,6 +66,13 @@ export default {
   },
 
   async destroy(req, res) {
-    // write your code here...
+    try {
+      const { id } = req.params;
+      const brand = await Brand.findByIdAndDelete(id);
+      if (!brand) return responder.notFound(res, { error: 'The brand has not been found.' });
+      return responder.success(req, res, brand, { message: 'Brand has been successfully deleted.' });
+    } catch (err) {
+      return responder.internalServerError(res, err);
+    }
   },
 };
