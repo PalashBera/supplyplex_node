@@ -5,7 +5,12 @@ import responder from '../helpers/responder';
 
 export default {
   async index(req, res) {
-    // write your code here...
+    try {
+      const brands = await Brand.find();
+      return responder.success(req, res, brands, { message: 'Brands have been successfully fetched.' });
+    } catch (err) {
+      return responder.internalServerError(res, err);
+    }
   },
 
   async show(req, res) {
