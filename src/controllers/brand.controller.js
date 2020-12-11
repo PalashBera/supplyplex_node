@@ -43,7 +43,26 @@ export default {
   },
 
   async update(req, res) {
-    // write your code here...
+    try {
+      const errors = validationResult(req).formatWith(errorFormatter);
+
+      if (!errors.isEmpty()) {
+        return responder.unprocessableEntity(res, { errors: errors.array() });
+      }
+
+      const { id } = req.params;
+
+      const value = {
+        name: req.body['name'],
+        active: req.body['active']
+      }
+
+      const brand = await Brand.findByIdAndUpdate(id, value, { new: true });
+      if (!brand) return responder.notFound(res, { error: 'The brand has not been found.' });
+      return responder.success(req, res, brand, { message: 'Brand has been successfully updated.' });
+    } catch (err) {
+      return responder.internalServerError(res, err);
+    }
   },
 
   async destroy(req, res) {
