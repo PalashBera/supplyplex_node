@@ -14,7 +14,14 @@ export default {
   },
 
   async show(req, res) {
-    // write your code here...
+    try {
+      const { id } = req.params;
+      const brand = await Brand.findById(id);
+      if (!brand) return responder.notFound(res, { error: 'The brand has not been found.' });
+      return responder.success(req, res, brand, { message: 'Brand has been successfully fetched.' });
+    } catch (err) {
+      return responder.internalServerError(res, err);
+    }
   },
 
   async create(req, res) {
