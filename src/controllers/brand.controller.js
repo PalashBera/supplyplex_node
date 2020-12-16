@@ -57,8 +57,8 @@ export default {
       const { id } = req.params;
 
       const value = {
-        name: req.body['name'],
-        active: req.body['active']
+        name: req.body.name,
+        active: req.body.active
       }
 
       const companyBoundBrand = Brand.byTenant(req.user.tenantId);
