@@ -30,7 +30,12 @@ module.exports = {
         } else {
           return value;
         }
-      }).withMessage('This doesn\'t match with password.')
+      }).withMessage('This doesn\'t match with password.'),
+
+    check('companyName')
+      .exists().withMessage('This should be present.').bail()
+      .isString().withMessage('This should be string.').bail()
+      .trim().isLength({ min: 1 }).withMessage('This can\'t be blank.')
   ],
 
   validateLogIn: [

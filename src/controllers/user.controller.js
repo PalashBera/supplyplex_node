@@ -1,6 +1,7 @@
 import { validationResult } from 'express-validator';
 import { errorFormatter } from '../helpers/errorFormator';
 import User from '../models/user.model';
+import Company from '../models/company.model';
 import userService from '../services/user.service';
 import responder from '../helpers/responder';
 import jwt from '../helpers/jwt';
@@ -13,6 +14,10 @@ export default {
       if (!errors.isEmpty()) {
         return responder.unprocessableEntity(res, { errors: errors.array() });
       }
+
+      const company = await Company.create({
+        name: req.body.companyName
+      });
 
       const encryptedPass = userService.encryptPassword(req.body.password);
 
