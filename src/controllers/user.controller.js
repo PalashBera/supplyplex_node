@@ -20,8 +20,9 @@ export default {
       });
 
       const encryptedPass = userService.encryptPassword(req.body.password);
+      const companyBoundUser = User.byTenant(company._id.toString());
 
-      const user = await User.create({
+      const user = await companyBoundUser.create({
         email: req.body.email,
         password: encryptedPass
       });

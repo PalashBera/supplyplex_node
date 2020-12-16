@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import mongoTenant from 'mongo-tenant';
 import jsonSelect from 'mongoose-json-select';
 
 const { Schema } = mongoose;
@@ -20,6 +21,7 @@ const userSchema = new Schema({
   }
 });
 
-userSchema.plugin(jsonSelect, '_id email');
+userSchema.plugin(jsonSelect, '_id email tenantId');
+userSchema.plugin(mongoTenant);
 
 export default mongoose.model('User', userSchema);

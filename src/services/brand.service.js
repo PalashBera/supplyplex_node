@@ -7,8 +7,9 @@ module.exports = {
       .exists().withMessage('This should be present.').bail()
       .isString().withMessage('This should be string.').bail()
       .trim().isLength({ min: 1 }).withMessage('This can\'t be blank.').bail()
-      .custom(async value => {
-        const brand = await Brand.findOne({ name: value });
+      .custom(async (value, { req, loc, path }) => {
+        const companyBoundBrand = Brand.byTenant(req.user.tenantId);
+        const brand = await companyBoundBrand.findOne({ name: value });
         if (brand) return Promise.reject('This has already been taken.');
       })
   ],
@@ -17,9 +18,10 @@ module.exports = {
       .exists().withMessage('This should be present.').bail()
       .isString().withMessage('This should be string.').bail()
       .trim().isLength({ min: 1 }).withMessage('This can\'t be blank.').bail()
-      .custom(async value => {
+      .custom(async (value, { req, loc, path }) => {
         // This condition should be more specific.
-        const brand = await Brand.findOne({ name: value });
+        const companyBoundBrand = Brand.byTenant(req.user.tenantId);
+        const brand = await companyBoundBrand.findOne({ name: value });
         if (brand) return Promise.reject('This has already been taken.');
       }),
 

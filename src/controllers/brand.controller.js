@@ -6,7 +6,8 @@ import responder from '../helpers/responder';
 export default {
   async index(req, res) {
     try {
-      const brands = await Brand.find();
+      const companyBoundBrand = Brand.byTenant(req.user.tenantId);
+      const brands = await companyBoundBrand.find();
       return responder.success(req, res, brands, { message: 'Brands have been successfully fetched.' });
     } catch (err) {
       return responder.internalServerError(res, err);
@@ -16,8 +17,9 @@ export default {
   async show(req, res) {
     try {
       const { id } = req.params;
-      const brand = await Brand.findById(id);
-      if (!brand) return responder.notFound(res, { error: 'The brand has not been found.' });
+      const companyBoundBrand = Brand.byTenant(req.user.tenantId);
+      const brand = await companyBoundBrand.findById(id);
+      if (!brand) return responder.notFound(res, { error: 'Brand has not been found.' });
       return responder.success(req, res, brand, { message: 'Brand has been successfully fetched.' });
     } catch (err) {
       return responder.internalServerError(res, err);
@@ -32,7 +34,9 @@ export default {
         return responder.unprocessableEntity(res, { errors: errors.array() });
       }
 
-      const brand = await Brand.create({
+      const companyBoundBrand = Brand.byTenant(req.user.tenantId);
+
+      const brand = await companyBoundBrand.create({
         name: req.body.name
       });
 
@@ -57,8 +61,9 @@ export default {
         active: req.body['active']
       }
 
-      const brand = await Brand.findByIdAndUpdate(id, value, { new: true });
-      if (!brand) return responder.notFound(res, { error: 'The brand has not been found.' });
+      const companyBoundBrand = Brand.byTenant(req.user.tenantId);
+      const brand = await companyBoundBrand.findByIdAndUpdate(id, value, { new: true });
+      if (!brand) return responder.notFound(res, { error: 'Brand has not been found.' });
       return responder.success(req, res, brand, { message: 'Brand has been successfully updated.' });
     } catch (err) {
       return responder.internalServerError(res, err);
@@ -68,8 +73,9 @@ export default {
   async destroy(req, res) {
     try {
       const { id } = req.params;
-      const brand = await Brand.findByIdAndDelete(id);
-      if (!brand) return responder.notFound(res, { error: 'The brand has not been found.' });
+      const companyBoundBrand = Brand.byTenant(req.user.tenantId);
+      const brand = await companyBoundBrand.findByIdAndDelete(id);
+      if (!brand) return responder.notFound(res, { error: 'Brand has not been found.' });
       return responder.success(req, res, brand, { message: 'Brand has been successfully deleted.' });
     } catch (err) {
       return responder.internalServerError(res, err);
