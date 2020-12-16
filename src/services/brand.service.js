@@ -19,10 +19,9 @@ module.exports = {
       .isString().withMessage('This should be string.').bail()
       .trim().isLength({ min: 1 }).withMessage('This can\'t be blank.').bail()
       .custom(async (value, { req, loc, path }) => {
-        // This condition should be more specific.
         const companyBoundBrand = Brand.byTenant(req.user.tenantId);
         const brand = await companyBoundBrand.findOne({ name: value });
-        if (brand) return Promise.reject('This has already been taken.');
+        if (brand && brand._id.toString() !== req.params.id) return Promise.reject('This has already been taken.');
       }),
 
     check('active')
