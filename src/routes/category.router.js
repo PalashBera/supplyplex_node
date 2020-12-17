@@ -13,5 +13,5 @@ categoryRouter
 categoryRouter
   .route('/:id')
   .get(passport.authenticate('jwt', { session: false }), categoryController.show)
-  .put(passport.authenticate('jwt', { session: false }), categoryController.update)
+  .put(passport.authenticate('jwt', { session: false }), categoryService.validateCreate, categoryController.update)
   .delete(passport.authenticate('jwt', { session: false }), categoryController.destroy);

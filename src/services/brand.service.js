@@ -13,6 +13,7 @@ module.exports = {
         if (brand) return Promise.reject('This has already been taken.');
       })
   ],
+
   validateUpdate: [
     check('name')
       .exists().withMessage('This should be present.').bail()

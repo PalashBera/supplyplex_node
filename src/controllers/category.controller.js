@@ -47,7 +47,27 @@ export default {
   },
 
   async update(req, res) {
-    // write your code here...
+    try {
+      const errors = validationResult(req).formatWith(errorFormatter);
+
+      if (!errors.isEmpty()) {
+        return responder.unprocessableEntity(res, { errors: errors.array() });
+      }
+
+      const { id } = req.params;
+
+      const value = {
+        name: req.body.name,
+        active: req.body.active
+      }
+
+      const companyBoundCategory = Category.byTenant(req.user.tenantId);
+      const category = await companyBoundCategory.findByIdAndUpdate(id, value, { new: true });
+      if (!category) return responder.notFound(res, { error: 'Category has not been found.' });
+      return responder.success(req, res, category, { message: 'Category has been successfully updated.' });
+    } catch (err) {
+      return responder.internalServerError(res, err);
+    }
   },
 
   async destroy(req, res) {
