@@ -71,6 +71,14 @@ export default {
   },
 
   async destroy(req, res) {
-    // write your code here...
+    try {
+      const { id } = req.params;
+      const companyBoundCategory = Category.byTenant(req.user.tenantId);
+      const category = await companyBoundCategory.findByIdAndDelete(id);
+      if (!category) return responder.notFound(res, { error: 'Category has not been found.' });
+      return responder.success(req, res, category, { message: 'Category has been successfully deleted.' });
+    } catch (err) {
+      return responder.internalServerError(res, err);
+    }
   },
 };
