@@ -5,7 +5,13 @@ import responder from '../helpers/responder';
 
 export default {
   async index(req, res) {
-    // write your code here...
+    try {
+      const companyBoundCategory = Category.byTenant(req.user.tenantId);
+      const categories = await companyBoundCategory.find();
+      return responder.success(req, res, categories, { message: 'Categories have been successfully fetched.' });
+    } catch (err) {
+      return responder.internalServerError(res, err);
+    }
   },
 
   async show(req, res) {
