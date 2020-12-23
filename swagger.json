@@ -1,0 +1,64 @@
+{
+  "swaggerDefinition": {
+    "info": {
+      "title": "SupplyPlex Inventory",
+      "description": "A simple rest API",
+      "version": "1.0.0",
+      "termsOfService": "http://swagger.io/terms/",
+      "contact": {
+        "email": "apiteam@swagger.io"
+      }
+    },
+    "servers": [
+
+          "http://localhost:4000/api",
+          "Local server"
+
+    ],
+    "basePath": "/api",
+    "securityDefinitions": {
+      "bearerAuth": {
+        "type": "apiKey",
+        "scheme": "bearer",
+        "name": "Authorization",
+        "in": "header",
+        "bearerFormat": "JWT"
+      }
+    },
+    "definitions": {
+      "Category": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "schemes": [
+      "http",
+      "https"
+    ]
+  },
+  "apis": ["./src/routes/*.js"]
+}

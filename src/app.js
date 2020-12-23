@@ -6,6 +6,7 @@ import logger from 'morgan';
 import passport from 'passport';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import swaggerOptions from '../swagger.json';
 import { rootRouter } from './api'
 import { configJWTStrategy } from './helpers/passportJwt';
 
@@ -15,6 +16,9 @@ mongoose.connect(config.db.mongodb.url, config.db.mongodb.options)
   .catch((err) => console.log('Error while connecting to database.'))
 
 const app = express();
+
+const swaggerJsDoc = require('swagger-jsdoc')
+const swaggerUi = require("swagger-ui-express");
 
 app.use(cors());
 app.use(express.json());
@@ -26,6 +30,9 @@ app.use(passport.initialize());
 configJWTStrategy();
 
 app.use('/api', rootRouter);
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use((req, res, next) => {
   const error = new Error('Not found');
